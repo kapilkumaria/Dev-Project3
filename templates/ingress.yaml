@@ -1,6 +1,10 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "static-web.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
+{{- $svcPortLondon := .Values.londonApi.service.port -}}
+{{- $svcPortCanada := .Values.canadaApi.service.port -}}
+{{- $svcPortVirginia := .Values.virginiaApi.service.port -}}
+{{- $svcPortParis := .Values.parisApi.service.port -}}
+
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
@@ -24,18 +28,50 @@ spec:
         - {{ . | quote }}
       {{- end }}
       secretName: {{ .secretName }}
-  {{- end }}
-{{- end }}
-  rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
-      http:
-        paths:
-        {{- range .paths }}
-          - path: {{ . }}
-            backend:
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
+{{ $fullName }}
+    servicePort: {{ $svcPort }}
         {{- end }}
   {{- end }}
 {{- end }}
+
+  rules:
+  {{- if or .Values.ingress.londonHosts .Values.ingress.canadaHosts .Values.ingress.virginiaHosts .Values.ingress.parisHosts }}
+      {{- range .Values.ingress.londonHosts }}
+      - host: {{ . | quote }}
+        http:
+          paths:
+          - path: {{ $.Values.ingress.londonPath }}
+            backend:
+              serviceName: {{ template "kapil.london.fullname" $ }}
+              servicePort: {{ $svcPortLondon }}
+      {{- end }}
+      {{- range .Values.ingress.canadaHosts }}
+      - host: {{ . | quote }}
+        http:
+          paths:
+          - path: {{ $.Values.ingress.canadaPath }}
+            backend:
+              serviceName: {{ template "kapil.canada.fullname" $ }}
+              servicePort: {{ $svcPortCanada }}
+      {{- end }}
+      {{- range .Values.ingress.virginiaHosts }}
+      - host: {{ . | quote }}
+        http:
+          paths:
+          - path: {{ $.Values.ingress.virginiaPath }}
+            backend:
+              serviceName: {{ template "kapil.virginia.fullname" $ }}
+              servicePort: {{ $svcPortVirginia }}
+      {{- end }}
+      {{- range .Values.ingress.parisHosts }}
+      - host: {{ . | quote }}
+        http:
+          paths:
+          - path: {{ $.Values.ingress.parisPath }}
+            backend:
+              serviceName: {{ template "kapil.paris.fullname" $ }}
+              servicePort: {{ $svcPortParis }}
+      {{- end }}
+{{- end }}
+{{- end }}
+

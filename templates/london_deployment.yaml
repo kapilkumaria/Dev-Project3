@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "static-web.fullname" . }}
+  name: {{ include "kapil.london.fullname" . }}
   labels:
     {{- include "static-web.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "static-web.selectorLabels" . | nindent 6 }}
+      {{- include "static-web.london.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "static-web.selectorLabels" . | nindent 8 }}
+        {{- include "static-web.london.selectorLabels" . | nindent 8 }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -22,10 +22,10 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}-london
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.image.repositoryLondon }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -53,3 +53,19 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "static-web.fullname" . }}-london
+  labels:
+    {{- include "static-web.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.londonApi.service.type }}
+  ports:
+   - port: {{ .Values.londonApi.service.port }}
+     targetPort: http
+     protocol: TCP
+     name: http
+  selector:
+    {{- include "static-web.london.selectorLabels" . | nindent 4 }}
