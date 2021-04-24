@@ -28,9 +28,6 @@ spec:
         - {{ . | quote }}
       {{- end }}
       secretName: {{ .secretName }}
-{{ $fullName }}
-    servicePort: {{ $svcPort }}
-        {{- end }}
   {{- end }}
 {{- end }}
 
