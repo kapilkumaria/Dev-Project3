@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "static-web.fullname" . }}-canada-test-connection"
+  labels:
+{{ include "static-web.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args:  ['{{ include "kapil.canada.fullname" . }}:{{ .Values.canadaApi.service.port }}']
+  restartPolicy: Never
+
