@@ -5,7 +5,7 @@ metadata:
   labels:
 {{ include "static-web.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": canada-test-success
+    "helm.sh/hook": test-success
 spec:
   containers:
     - name: wget
