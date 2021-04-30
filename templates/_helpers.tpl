@@ -7,8 +7,8 @@ Expand the name of the chart.
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "static-web.london.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}-london
+{{- define "static-web.default.name" -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}-default
 {{- end -}}
 
 {{- define "static-web.canada.name" -}}
@@ -43,9 +43,9 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 
-{{ define "kapil.london.fullname" -}}
+{{ define "kapil.default.fullname" -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- printf "%s-%s-%s" .Release.Name $name "london"| trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s-%s" .Release.Name $name "default"| trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "kapil.canada.fullname" -}}
@@ -91,8 +91,8 @@ app.kubernetes.io/name: {{ include "static-web.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
-{{- define "static-web.london.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "static-web.london.name" . }}
+{{- define "static-web.default.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "static-web.default.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 

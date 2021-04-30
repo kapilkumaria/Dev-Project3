@@ -33,7 +33,7 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-londonApi:
+defaultApi:
   service:
     type: ClusterIP
     port: 8200
@@ -52,8 +52,8 @@ parisApi:
 
 ingress:
   enabled: true
-  londonHosts:
-    - london.kapildevkumaria.com
+  #  londonHosts:
+  #  - london.kapildevkumaria.com
   canadaHosts:
     - canada.kapildevkumaria.com
   virginiaHosts:

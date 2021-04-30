@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "static-web.fullname" . }}-london-test-connection"
+  name: "{{ include "static-web.fullname" . }}-default-test-connection"
   labels:
 {{ include "static-web.labels" . | nindent 4 }}
   annotations:
@@ -11,6 +11,6 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "kapil.london.fullname" . }}:{{ .Values.londonApi.service.port }}']
+      args:  ['{{ include "kapil.default.fullname" . }}:{{ .Values.defaultApi.service.port }}']
   restartPolicy: Never
 

@@ -1,6 +1,6 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "static-web.fullname" . -}}
-{{- $svcPortLondon := .Values.londonApi.service.port -}}
+{{- $svcPortDefault := .Values.defaultApi.service.port -}}
 {{- $svcPortCanada := .Values.canadaApi.service.port -}}
 {{- $svcPortVirginia := .Values.virginiaApi.service.port -}}
 {{- $svcPortParis := .Values.parisApi.service.port -}}
@@ -33,15 +33,6 @@ spec:
 
   rules:
   {{- if or .Values.ingress.londonHosts .Values.ingress.canadaHosts .Values.ingress.virginiaHosts .Values.ingress.parisHosts }}
-      {{- range .Values.ingress.londonHosts }}
-      - host: {{ . | quote }}
-        http:
-          paths:
-          - path: {{ $.Values.ingress.londonPath }}
-            backend:
-              serviceName: {{ template "kapil.london.fullname" $ }}
-              servicePort: {{ $svcPortLondon }}
-      {{- end }}
       {{- range .Values.ingress.canadaHosts }}
       - host: {{ . | quote }}
         http:
@@ -69,6 +60,9 @@ spec:
               serviceName: {{ template "kapil.paris.fullname" $ }}
               servicePort: {{ $svcPortParis }}
       {{- end }}
+  backend:    
+    serviceName: {{ template "kapil.default.fullname" $ }}
+    servicePort: {{ $svcPortDefault }}
 {{- end }}
 {{- end }}
 
