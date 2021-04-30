@@ -52,8 +52,6 @@ parisApi:
 
 ingress:
   enabled: true
-  #  londonHosts:
-  #  - london.kapildevkumaria.com
   canadaHosts:
     - canada.kapildevkumaria.com
   virginiaHosts:
