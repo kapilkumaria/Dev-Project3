@@ -11,7 +11,7 @@ VIRGINIA-WEBSITE-URL:
   http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host }}
   {{- end }}
 {{- end }}
-PARIS-WEBSITE-URL:
+
 {{- if .Values.ingress.enabled }}
 {{- range $host := .Values.ingress.parisHosts }}
   http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host }}

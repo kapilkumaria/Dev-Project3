@@ -36,8 +36,8 @@ spec:
       {{- range .Values.ingress.canadaHosts }}
       - host: {{ . | quote }}
         http:
-          paths:
-          - path: {{ $.Values.ingress.canadaPath }}
+          paths: 
+          - path: /
             backend:
               serviceName: {{ template "kapil.canada.fullname" $ }}
               servicePort: {{ $svcPortCanada }}
@@ -46,23 +46,20 @@ spec:
       - host: {{ . | quote }}
         http:
           paths:
-          - path: {{ $.Values.ingress.virginiaPath }}
+          - path: /
             backend:
               serviceName: {{ template "kapil.virginia.fullname" $ }}
               servicePort: {{ $svcPortVirginia }}
       {{- end }}
-      {{- range .Values.ingress.parisHosts }}
+      {{- range .Values.ingress.defaultHosts }}
       - host: {{ . | quote }}
         http:
           paths:
-          - path: {{ $.Values.ingress.parisPath }}
+          - path: /
             backend:
-              serviceName: {{ template "kapil.paris.fullname" $ }}
-              servicePort: {{ $svcPortParis }}
+              serviceName: {{ template "kapil.default.fullname" $ }}
+              servicePort: {{ $svcPortDefault }}
       {{- end }}
-  backend:    
-    serviceName: {{ template "kapil.default.fullname" $ }}
-    servicePort: {{ $svcPortDefault }}
 {{- end }}
 {{- end }}
 

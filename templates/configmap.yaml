@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-cm
+data:
+  nginx.conf: |
+      user nobody;
+      worker_processes auto;
+      # error_log /var/log/nginx/error.log;
+      pid /run/nginx.pid;
+
+      events {
+          worker_connections 1024;
+      }
+
+      http {
+         log_format main
+           'remote_addr:$remote_addr\t'
+           'time_local:$time_local\t';
+
+           # access_log      /var/log/nginx/access.log  main;
+
+         server {
+            listen 80;
+            server_name _;
+            root /usr/local/nginx/html/images;
+
+            location / {
+               autoindex on;
+            }
+
+            error_page 404 /404.html;
+                location = /40x.html {
+            }
+
+            error_page 500 502 503 504 /50x.html;
+                location = /50x.html {
+            }
+            }
+      }
