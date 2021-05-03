@@ -8,7 +8,7 @@ image:
   repositoryLondon: ak11in/nginx-h-london
   repositoryCanada: ak11in/nginx-red-canada
   repositoryVirginia: ak11in/nginx-blue-nvgn
-  repositoryParis: ak11in/nginx-paris
+  #  repositoryParis: ak11in/nginx-paris
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -45,10 +45,7 @@ virginiaApi:
   service:
     type: ClusterIP
     port: 8400
-parisApi:
-  service:
-    type: ClusterIP
-    port: 8500
+  
 
 ingress:
   enabled: true
@@ -56,12 +53,14 @@ ingress:
     - canada.kapildevkumaria.com
   virginiaHosts:
     - virginia.kapildevkumaria.com
-  parisHosts:
-    - paris.kapildevkumaria.com
+  defaultHosts:
+    - '*.kapildevkumaria.com'
    
-  annotations: {}
+  annotations: 
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    #nginx.ingress.kubernetes.io/use-regex: "true"
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
