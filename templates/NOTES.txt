@@ -11,7 +11,15 @@ VIRGINIA-WEBSITE-URL:
   http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host }}
   {{- end }}
 {{- end }}
-
+WILDCARD-WEBSITE-URL:
+{{- if .Values.ingress.enabled }}
+{{- range $host := .Values.ingress.defaultHosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host }}
+  {{- end }}
+{{- end }}
+Replace * with any wildcard. For example:
+https://dummy.kapilkumaria.com
+https://test.kapilkumaria.com
 {{- if .Values.ingress.enabled }}
 {{- range $host := .Values.ingress.parisHosts }}
   http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host }}
